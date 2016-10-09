@@ -1,0 +1,74 @@
+#!/usr/bin/python3
+
+import sys
+import os
+wc = ''
+cat = ''
+cOption = True
+wOption = True
+lOption = True
+mOption = False
+try:
+	dash = sys.argv[1][0] == '-'
+except (IndexError):
+	dash = False
+if len(sys.argv) > 1 and sys.argv[1][0] == '-':
+	cOption = False
+	wOption = False
+	lOption = False
+if len(sys.argv)  == 1 or (len(sys.argv) == 2 and dash):
+	for line in sys.stdin:
+		cat += line
+	catsplit = cat.split('\n')
+	print(catsplit)
+	cat = ''
+	for num in range(0,len(catsplit)-1):
+		if catsplit[num] == catsplit[-2]:
+			cat += catsplit[num]
+		else:
+			cat += catsplit[num] + '\n'
+	if dash:
+		if "l" in sys.argv[1]:
+			lOption = True
+		if "w" in sys.argv[1]:
+			wOption = True
+		if "c" in sys.argv[1]:
+			cOption = True
+		if "m" in sys.argv[1]:
+			mOption = True
+	wc += "wc -"
+	if lOption:
+		wc += "l"
+	if wOption:	
+		wc += "w"
+	if cOption:
+		wc += "c"
+	if mOption:
+		wc += "m"
+	wc += ' '
+	os.system("echo " + '"' + cat + '"' + " | " + wc)
+
+else:
+	for argv in range(1,len(sys.argv)):
+		if sys.argv[argv][0] == '-':
+			if "l" in sys.argv[argv]:
+				lOption = True
+			if "w" in sys.argv[argv]:
+				wOption = True
+			if "c" in sys.argv[argv]:
+				cOption = True
+			if "m" in sys.argv[argv]:
+				mOption = True
+		else:
+			wc += "wc -"
+			if lOption:
+				wc += "l"
+			if wOption:	
+				wc += "w"
+			if cOption:
+				wc += "c"
+			if mOption:
+				wc += "m"
+			wc += ' '
+			os.system(wc +  sys.argv[argv])
+
